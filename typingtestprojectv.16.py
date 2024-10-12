@@ -423,7 +423,7 @@ def results():
         accuracy = round((correct_words/amountOfWords)*100) 
         if accuracy >49:
             wpm = round(correct_words*(60/(clock-currentTime)))
-            displayed_wpm = "Your typing speed is",wpm,"words per minute."
+            displayed_wpm = "Your typing speed is " + str(wpm) + " words per minute."
             displayed_wpm2 = str(displayed_wpm)
             text_on_screen(displayed_wpm2, 100, 100)
             highScoreUpdater(wpm, accuracy)
