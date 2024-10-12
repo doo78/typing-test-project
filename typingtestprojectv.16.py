@@ -560,7 +560,6 @@ def wpmAccuracyDateDisplayer(score,header,xAdder):
                 score = score + " " + removeCommaAndBracket
                 #adding a space allows for the split function to separate them
                 scores = score
-                print(scores)
             
         elif header == "accuracy":
 
@@ -570,11 +569,9 @@ def wpmAccuracyDateDisplayer(score,header,xAdder):
                 removeCommaAndBracket = removeFirstBracket[0:-2]
                 score = score + " " + removeCommaAndBracket +"%"
                 accuracies = score
-                print(accuracies)
         else:
 
             a = c.execute("SELECT dateRecord FROM Previous10 WHERE user_ID = (?) ORDER BY dateRecord",(user_id,))
-            print(a)
             for row in a:
                 removeFirstBracket = str(row)[1:]
                 removeCommaAndBracket = removeFirstBracket[0:-2]
@@ -585,7 +582,6 @@ def wpmAccuracyDateDisplayer(score,header,xAdder):
                 
                 
                 dates = score
-                print(dates)
             
             
             
@@ -752,7 +748,8 @@ def accuracyCheck(input_text,amountOfWords):
     
 
     accuracy = round((correct_words2/amountOfWords)*100)
-    displayedAccuracy = str(("Accuracy:",str(accuracy),"%"))
+    #displayedAccuracy = str(("Accuracy:",str(accuracy),"%"))
+    displayedAccuracy = "Accuracy: " + str(accuracy) + "%"
     text_on_screen(displayedAccuracy, 100, 600)
     return correct_words2
             
@@ -771,7 +768,7 @@ def restartTest():
 
 
 #Input box
-input_box = pygame.Rect(20,400,770,100)#(X,Y,Width,Height) - W and H by pixels
+input_box = pygame.Rect(20,400,770,150)#(X,Y,Width,Height) - W and H by pixels
 customerFeedback_box = pygame.Rect(20,250,770,300)
 
 
@@ -2164,7 +2161,6 @@ while running == True:
 
     if showCustomerFeedback == True:
 
-        print(rating)
         screen.fill((255,255,255))
         text_on_screen("Rate the program out of 10:",250,50)
         text_on_screen("Your review:",50,200)
@@ -2410,7 +2406,6 @@ while running == True:
 
         if rewardMoney == True:
             moneyToDisplay = str(updateMoney(minigameDifficulty, points))
-            print(moneyToDisplay)
             text_on_screen(moneyToDisplay,100,200)
 
 
