@@ -9,17 +9,12 @@ pygame.display.set_caption("Pygame test program") #names the program
 textfont = pygame.font.SysFont("monospace", 20) #Sets the font
 primaryKey = "a" #Initialises the variable for later
 
-
-
 import pygame, time
 
 pygame.init() #Initialises pygame
 screen = pygame.display.set_mode([800, 700]) #Sets the size of the screen
 pygame.display.set_caption("Pygame test program") #Names the program
 textfont = pygame.font.SysFont("monospace", 20) #Sets the font
-
-
-
 
 #Creating the user database
 
@@ -33,10 +28,7 @@ c = new_db.cursor()
 ##c.execute("DROP TABLE CustomerFeedback")
 ##c.execute("DROP TABLE HighScore")
 ##c.execute("DROP TABLE PowerUps")
-
-
 ##c.execute("DROP TABLE Text")
-
 
 #Creates the tables
 
@@ -82,8 +74,6 @@ c.execute('''CREATE TABLE IF NOT EXISTS CustomerFeedback
 
 new_db.commit()
 
-
-
 #Creating the text database
 
 if not os.path.isfile("text.db"): #Checks if the database already exists
@@ -119,8 +109,6 @@ if not os.path.isfile("text.db"): #Checks if the database already exists
     randomWords_easy =("this wife can but is might cat house cup in to India but all your tea easy too quite lick boss yes time quite wreck time happy leg word food music egg cell country state pea mat snake")
     randomWords_medium =("should but quite mighty inside country Canada timely frame kettle punish school headmaster sprint happy trouble guitar maybe together blinds earphones scissors ruler spray lamp blind charger")
     randomWords_hard =("perhaps indiscrimately prestigous however fathom sometimes always television primitive scintillating ordeal moisture mighty suffragette party telephone recording galloping decisive measure cautiously redact")
-
-
                      
     text_tmp = [('Music','Easy',music_easy),
                     ('Music','Medium',music_medium),
@@ -155,7 +143,6 @@ if not os.path.isfile("text.db"): #Checks if the database already exists
 newtext_db = sqlite3.connect("text.db")
 c_new = newtext_db.cursor()
 
-
 #Text focusing on each part of the keyboard for the Lessons and Analysis section
 top_left1 = ("neet edee jeef baed jeqee ands eegs happeeq eemda assd heen fad geed ristress eef baed jeqee ands eegs")
 top_left2 = ("eef baed rest ands eegs gea uhaa dead haaq risit heea fesda jeed neet edee jeef jeqee ands eegs")
@@ -183,7 +170,6 @@ middle3 = ("get hurry punt bubble fabby hat hen great hag vat bob berry tray yes
 middle = [middle1, middle2, middle3]
 
 randomText = random.randint(0,2)            
-
 
 #Class for a button 
 class Button():
@@ -213,7 +199,6 @@ class Button():
         
         return False
 
-
 #Powerups
 def time_stop():
 
@@ -221,7 +206,6 @@ def time_stop():
     quantity = int(removeBracketsAndCommas(str(c.fetchall())))
 
     if quantity != 0:
-    
         global timeStop_ticks
         timeStop_ticks = pygame.time.get_ticks()/1000
         
@@ -248,16 +232,12 @@ def time_stop():
     else:
         pass
 
-
-
-    
 def bomb():
 
     c.execute("SELECT quantity FROM PowerUps WHERE PowerUps.user_ID = (?) AND PowerUps.name = (?)",[user_id ,"Bomb"])
     quantity = int(removeBracketsAndCommas(str(c.fetchall())))
 
     if quantity != 0:
-        
         global bombExploding
         global bomb_ticks
         bombExploding = True
@@ -285,18 +265,12 @@ def bomb():
         new_db.commit()
     else:
         pass
-    
-
-
-
 
 def slow_blocks():
-    
     c.execute("SELECT quantity FROM PowerUps WHERE PowerUps.user_ID = (?) AND PowerUps.name = (?)",[user_id ,"Slow Blocks"])
     quantity = int(removeBracketsAndCommas(str(c.fetchall())))
 
     if quantity != 0:
-    
         global slowBlocks_ticks
         slowBlocks_ticks = pygame.time.get_ticks()/1000
 
@@ -322,7 +296,6 @@ def slow_blocks():
         new_db.commit()
     else:
         pass
-
 
 #Class for the block used in the minigame    
 class Block():
@@ -408,7 +381,6 @@ class Block():
             return False
 
     def explode(self):
-        
         global input_text
         
         self.y = 0
@@ -457,7 +429,6 @@ def results():
             highScoreUpdater(wpm, accuracy)
             recordResults(wpm, accuracy)
             
-            
         else:
             accuracy_too_low = "Your accuracy must be at least 50% for your test to be valid."
             text_on_screen(accuracy_too_low, 100, 100)
@@ -495,7 +466,6 @@ def displayAverage(speedOrAccuracy): #Using this parameter allows for code reuse
     #Displays it with brackets and a comma
         
     for row in a:
-
         removeFirstBracket = str(row)[1:]
         removeCommaAndBracket = removeFirstBracket[0:-2]
         scores.append(int(removeCommaAndBracket)) #Adds to the list
@@ -510,7 +480,6 @@ def displayAverage(speedOrAccuracy): #Using this parameter allows for code reuse
         
     text_on_screen("Average:",125, 375)   
     
-        
 
 #Displays the Highscore
 def highScore():
@@ -540,7 +509,6 @@ def displayPrevious10():
     wpmAccuracyDateDisplayer(dates, 'dateRecord', 250)
         
     record = False
-
 
 #Displays the accuracy and date of each test in the previous 10 results
 def wpmAccuracyDateDisplayer(score,header,xAdder):
@@ -578,12 +546,7 @@ def wpmAccuracyDateDisplayer(score,header,xAdder):
                 dateAndTime = removeCommaAndBracket [6:17] 
                 b = (dateAndTime).replace(" ","|")
                 score = score + " " + b
-
-                
-                
                 dates = score
-            
-            
             
     #x adder is for accuracy because it needs a different x value
     if len(score.split()) >0:
@@ -608,7 +571,6 @@ def wpmAccuracyDateDisplayer(score,header,xAdder):
         text_on_screen(score.split()[9], xAdder +375, 520)
     
     
-
 #Gives money for playing the minigame
 def updateMoney(minigameDifficulty, points):
     global rewardMoney
@@ -635,8 +597,6 @@ def updateMoney(minigameDifficulty, points):
     #The money is updated in the database
     c.execute("UPDATE User SET money = (?) WHERE User.user_ID = (?)",[newMoney, user_id])
     new_db.commit()
-
-
     rewardMoney = False #Ensures the money is only added once
         
     return newMoney
@@ -717,7 +677,6 @@ def removeBracketsAndCommas(text):
 
     return text
     
-    
 #Accuracy checker    
 def accuracyCheck(input_text,amountOfWords):
     words_correct = 0
@@ -745,8 +704,6 @@ def accuracyCheck(input_text,amountOfWords):
                 words_incorrect +=1        
     correct_words2 = round(len(correct_words)/5)
 
-    
-
     accuracy = round((correct_words2/amountOfWords)*100)
     #displayedAccuracy = str(("Accuracy:",str(accuracy),"%"))
     displayedAccuracy = "Accuracy: " + str(accuracy) + "%"
@@ -765,21 +722,16 @@ def restartTest():
     input_text = ""
     start = False
 
-
-
 #Input box
 input_box = pygame.Rect(20,400,770,150)#(X,Y,Width,Height) - W and H by pixels
 customerFeedback_box = pygame.Rect(20,250,770,300)
-
 
 #Images
 bombImg = pygame.image.load('explosion.png')
 bombImg = pygame.transform.scale(bombImg,(700,700))
 
-        
 #Intro text (shown as the default sample text)
 sample_text = ("Hello and welcome to the typing test that improves and tests your typing speed")
-
 
 #Calculates the amount of characters in the sample_text
 def calculateAmountOfCharacters (sample_text):
@@ -790,7 +742,6 @@ def calculateAmountOfCharacters (sample_text):
             amountOfCharacters = amountOfCharacters + sample_text[i]
         i = i+1
     return amountOfCharacters
-
 
 #Procedure for buying from the minigame shop
 def minigameShopPurchase(powerUpName, price):
@@ -812,10 +763,7 @@ def minigameShopPurchase(powerUpName, price):
     else:
         displayCannotAffordMessage = True
     
-
-
 input_text = ("")
-
 
 #block movement
 def movement(block,x,y):
@@ -843,7 +791,6 @@ def text_on_screen(text, width, height):
                 height = height +40 #Adjusts the height by 40 pixels so it is displayed under the previous text
                 screen.blit(word,(width + start_position_of_next_word, height)) #Same process except with adjusted height
                 start_position_of_next_word = start_position_of_next_word + word.get_width()
-
                 
     else:
         screen.blit(drawnText,(width, height))
@@ -884,7 +831,6 @@ def encode(plaintext,key):
                  if num > ord("z"):
                      num = num - 26
 
-                
             ciphertext = ciphertext + chr(num)    
         else:
             ciphertext = ciphertext + c #non-letter characters are unchanged
@@ -920,8 +866,6 @@ def minigameExecution(block1,block2,block3,block4):
     if block4.typed(input_text) == True:
         input_text = ""
 
-
-        
 #Initialising variables#
 #(unorganised because all they are required to do is to be stated before use)
 running = True
@@ -996,8 +940,6 @@ category = "N/A"
 difficulty = "N/A"
 minigameUsernames = ['N/A','N/A','N/A','N/A','N/A']
 minigameRankings = [('N/A','N/A'),('N/A','N/A'),('N/A','N/A'),('N/A','N/A'),('N/A','N/A')]
-#User_ID
-
 
 #Minigame variables
 slowBlocks_ticks = 100000000
@@ -1024,7 +966,6 @@ else:
     c.execute("SELECT MAX(previous10_ID) FROM Previous10")
     primaryKey =(c.fetchone()[0])+1 #Makes the next primary key 1 more than the last one
 
-    
 #Creates primary key for user 
 def createPrimaryKey():    
 
@@ -1036,13 +977,9 @@ def createPrimaryKey():
         userPrimaryKey =(c.fetchone()[0])+1 #Makes the next primary key 1 more than the last one
 
     return userPrimaryKey
-
-
     
 # Game loop
 while running == True:
-
-    
     #Starts the main test)    
     if enter == False and start == True:
 
@@ -1104,7 +1041,6 @@ while running == True:
             timeStop_ticks = 10000000000000000000000
             
     for event in pygame.event.get():
-
         
         mousePosition = pygame.mouse.get_pos() # Returns the x and y position of the mouse
         if event.type == pygame.QUIT:
@@ -1134,7 +1070,6 @@ while running == True:
                 
             if event.key == pygame.K_3 and showMinigame == True:
                 bomb()
-
             
             #Allows backspace to work as intended    
             if event.key == pygame.K_BACKSPACE:
@@ -1156,9 +1091,6 @@ while running == True:
                 else:
                     input_text = input_text[0:-1]      
 
-
-                  
-                  
             elif event.key == pygame.K_RETURN:
 
                 if showMinigame == True:
@@ -1166,8 +1098,7 @@ while running == True:
                     if minigameStop == True: #If it hasn't started
                         minigameStop = False #then start
                         input_text = ""      #Removes the "press enter to start" text
-                        
-                            
+                             
                         if minigameDifficulty == "easy":
                             easyBlock1.set_y(0)
                             easyBlock2.set_y(0)
@@ -1197,7 +1128,6 @@ while running == True:
                             mediumBlock3.set_speed(0.25)
                             mediumBlock4.set_speed(0.15)
                             
-                            
                         showMinigameResults == False
                         points = 0
 
@@ -1211,8 +1141,6 @@ while running == True:
                         showResults = True
                         enter = True
 
-                    
-                        
                     elif section == 0:
                         
                         sample_text = top_left[0] #Changes the display text
@@ -1231,7 +1159,6 @@ while running == True:
                         enter = False
                         input_text = ""
                         
-                        
                     elif section == 2:
                         calculateAnalysisResults(1)
                         sample_text = top_right[0]
@@ -1239,14 +1166,12 @@ while running == True:
                         enter = False
                         input_text = ""
                         
-                        
                     elif section == 3:
                         calculateAnalysisResults(2)
                         sample_text = bottom_right[0]
                         start = False
                         enter = False
                         input_text = ""
-                        
 
                     elif section == 4:
                         calculateAnalysisResults(3)
@@ -1255,18 +1180,14 @@ while running == True:
                         enter = False
                         input_text = ""
                         
-
                     elif section == 5:
                         calculateAnalysisResults(4)
                         start = False
                         
                         showAnalysisResults = True
                         
-
                     section = section +1
                     
-
-                  
             else:
 
                 #Ignores powerup inputs and the spacebar as part of the input text
@@ -1291,11 +1212,6 @@ while running == True:
                 elif currentBox == "new username":
                     if len(newUsernameText)<17:
                         newUsernameText += event.unicode
-
-
-             
-
-                
 
         #When you click...
         elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -1368,7 +1284,6 @@ while running == True:
             analysisButton = Button ((255,255,255),200,350,100,30,"Analysis")
             trainingButton = Button ((255,255,255),500,350,100,30,"Training")
             lessonOptionBackButton = Button ((255,255,255),100,550,100,30,"BACK")
-            
 
             #Training options Buttons
             topLeftButton = Button ((255,255,255),100,200,100,30,"Top Left")
@@ -1438,7 +1353,6 @@ while running == True:
                 enter = True
                 start = False
                 start_ticks = pygame.time.get_ticks()/1000
-                
                 
             #Customise text button
             if customiseTextButton.hovering(mousePosition) == True and showSettings == True:
@@ -1516,7 +1430,6 @@ while running == True:
                 showSelectCategoryPage = False
                 retrieveSampleText()
                 restartTest()
-                
                 
             #Back button in the settings            
             if settingsBackButton.hovering(mousePosition) == True and showSettings == True:
@@ -1656,8 +1569,6 @@ while running == True:
             if addButton.hovering(mousePosition) == True and showLogin == True:
 
                 if len(newUsernameText)>2 and len(newPasswordText)>2:
-                        
-
                     if add == True: #Ensures the user cannot add more than one account
 
                         detailsTooShort = False
@@ -1725,9 +1636,7 @@ while running == True:
                 showRating = True
 
             if customerFeedbackSubmitButton.hovering(mousePosition) == True and showCustomerFeedback == True:
-
                 if rating > 0:
-                    
                                         
                     c.execute("UPDATE CustomerFeedback SET rating = (?) WHERE user_ID = (?)",[rating,user_id])    #Adds the rating given
                     c.execute("UPDATE CustomerFeedback SET review = (?) WHERE user_ID = (?)",[input_text,user_id])#Adds the review
@@ -1745,9 +1654,6 @@ while running == True:
                 
                 else:
                     showBadReviewMessage = True
-                
-                
-                
             
                 new_db.commit()
                 
@@ -1775,7 +1681,6 @@ while running == True:
                 showMinigameLeaderboard = True
                 showLeaderboard = False
                 
-
             if minigameButton.hovering(mousePosition) == True and showMenu == True:
                 showMinigameShop = True
                 showMenu = False
@@ -1856,14 +1761,10 @@ while running == True:
             if drawbacksButton.hovering(mousePosition) == True and showTipsAndTricks == True:
                 webbrowser.open("http://www.jointventurephysiotherapy.com/blog/repetitive-strain-injury-rsi-from-computer-use")
             
-
     #Main typing test
     if enter == False:
         #background colour        
         screen.fill((255, 255, 255))
-        
-     
-
 
         #Generate input box
         pygame.draw.rect(screen,(0,0,0),input_box,2)#(surface to draw on, colour, shape, border width)
@@ -1871,8 +1772,6 @@ while running == True:
         #generate text
         text_on_screen(sample_text, 100, 100)
         text_on_screen(input_text,22,400)
-        
-        
 
         #timer
         displayedTimer = textfont.render(str(round(currentTime)),True,(0,0,0))
@@ -1881,15 +1780,11 @@ while running == True:
         #back button
         backButton = Button ((255,255,255),100,600,100,30,"BACK")
         backButton.display(screen, textfont, True,(255,255,255))
-        
-
-    
     
     #success event
     if enter == True:
         results()
         pygame.display.update()
-
     
     #Settings
     if showSettings == True:
@@ -2227,7 +2122,6 @@ while running == True:
         
         c.execute("SELECT highScore_ID, wpm, accuracy, category, difficulty FROM HighScore ORDER BY wpm DESC")
 
-
         #Stores each row as an element of the ranking list created above
         for x in range(0, len(c.fetchall())):
 
@@ -2257,7 +2151,6 @@ while running == True:
                 removeApostrophe = removeCommaBracket2[1:]
                 
                 rankingUsernames[i] = removeApostrophe
-
 
         #Displays each element of the usernameRankings list
         text_on_screen("USERNAMES",100,100)
@@ -2314,9 +2207,7 @@ while running == True:
         minigameHardButton.display(screen, textfont, True, (255,255,255))
         minigameSurvivalButton.display(screen, textfont, True, (255,255,255))
 
-        
     if showMinigame == True:
-        
         screen.fill((255,255,255)) 
 
         if bombExploding == True:
@@ -2324,7 +2215,6 @@ while running == True:
             displayImage(bombImg,50,50)
             
             if pygame.time.get_ticks()/1000 - bomb_ticks >0.25:
-                
                 bombExploding = False
 
                 bomb_ticks = 1000000
@@ -2433,9 +2323,6 @@ while running == True:
 
         #Retrieves the username for each record and stores it in the rankingUsernames list
         for i in range (0, len(minigameRankings)):
-
-           
-            
             c.execute("SELECT username FROM User WHERE user_ID = (?)", (str(minigameRankings[i][0]),))
             
             if str(minigameRankings[i][0]) == 'N/A':
@@ -2506,7 +2393,6 @@ while running == True:
         
         text_on_screen("Description:",80,550)
 
-        
 
         #Shop Buttons
         minigameContinueButton = Button((255,255,255),600,650,100,30,"CONTINUE")
@@ -2529,8 +2415,6 @@ while running == True:
         descTimeStopButton.display(screen, textfont, True, (0,0,0))
         buyBombButton.display(screen, textfont, True, (0,0,0))
         descBombButton.display(screen, textfont, True, (0,0,0))
-
-
 
         if displayCannotAffordMessage == True:
             text_on_screen("You cannot afford this power up.", 400,175)
@@ -2583,8 +2467,5 @@ while running == True:
         tipsAndTricksBackButton = Button ((255,255,255),600,650,50,30,"BACK")
         tipsAndTricksBackButton.display(screen, textfont, True, (0,0,0))
 
-
-
-        
 new_db.close()
 pygame.quit()
